@@ -1,0 +1,25 @@
+<?php
+
+return array(
+  'debug' => 0,
+
+  'base_url' => 'http://example.com',
+
+  'sql_server' => 'localhost',
+  'sql_user' => '<mysql user username>',
+  'sql_pass' => '<mysql user password>',
+  'sql_db' => '<mysql database name>',
+  'sql_t_users' => '<users table name>',
+  'sql_t_confirms' => '<pending user confirmations table name>',
+
+  'pepper' => '<about 24 random chars>',
+
+  'gpg_home' => '<GPG home location>',
+
+  'mail_host' => '<mail host server>',
+  'mail_from' => '<mail server user name>',
+  'mail_from_name' => '<mail user real name>',
+  'mail_pass' => '<mail server user password>',
+);
+
+?>

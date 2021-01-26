@@ -1,0 +1,68 @@
+php-site
+========
+
+This is a bit of test site written for my own learning purposes. The term
+'forum' may appear in the source code since that was one of the original ideas
+for the project, however I'm not sure if you could call it that just yet.
+
+The code might be a little bit of a mess, but in general this is basically a
+site with a login/register system and not much else. Here are some of the
+features implemented:
+
+* Login page
+* Register page - users require a PGP key to sign up.
+* Argon2 password hashing (with salt and a pepper)
+* Confirmation system - users in database are marked 'Unverified' if not
+  confirmed via e-mail.
+* Confirmation e-mail - is also encrypted via PGP
+* A simple account management page, to re-send confirmation e-mail, and to
+  delete account.
+
+Usage:
+If you'd like to try running this site for whatever reason, be sure to create a
+config.php file. An example, 'config.php.example' is provided. Ensure you also
+read the following text to get it running:
+
+Requirements to run:
+* A web server, e.g Nginx, with functional PHP
+* GnuPG extension for PHP
+* PHPMailer (with PGP support patch) - provided in the source code in /vendor.
+  (See https://github.com/mikejzx/php-mailer-pgp for more info.)
+* MySQL database software, e.g MariaDB
+
+MySQL:
+The site use a MySQL database to store user information. Database should be
+laid out in the following manner. The VARCHAR sizes and other attributes are
+provided as a guide.
+
++ Table: 'Users'
+  Columns:
+  + email: VARCHAR(32), primary key 
+         - user's e-mail address
+  + username: VARCHAR(32)
+            - user's username
+  + pw_hash: VARCHAR(255)
+           - user's hashed password
+  + pgp_key_fp: VARCHAR(64) 
+              - user's PGP key fingerprint
+  + status: VARCHAR(12)
+          - user's status on forum.
+	  - E.g: 'Unverified', 'User', or 'Admin'
+  + reg_date: TIMESTAMP
+            - time at which user registered.
+	    - Set default to current_timestamp()
+
++ Table: 'ConfirmationCodes'
+  This is A table of users who are pending confirmation.
+  Columns:
+  + email: VARCHAR(32), primary key
+         - e-mail address of this user
+  + confirm_code: VARCHAR(64)
+                - User's confirmation code (SHA256 hash)
+
+
+
+Warning:
+This site is almost certainly vulnerable to SQL injections on some pages in
+it's current state. I may eventually get around to securing the code, but as of
+now, I believe it's quite insecure. 

@@ -1,0 +1,51 @@
+php-mailer-pgp
+==============
+
+About:
+This is a fork of PHPMailer, with a re-write of ravisorg's PGP encryption
+implementation. I've re-written it to strip out all the stuff that I felt was
+unnecessary and that was just complicating things. This version supports *only
+encryption*. Signing is not implemented currently, however may be done so in
+future. The idea was to just keep this class as simple as possible to suit my
+use case. 
+
+I didn't bother re-writing the comments so if you want some documentation just
+compare it to the original code. I felt like the comments were a bit verbose
+anyway.
+
+ravisorg's original code:
+https://github.com/ravisorg/PHPMailer/blob/openpgp/class.phpmailerpgp.php
+
+Usage:
+Clone this repo into your source directory and include the following in your
+code (adjust the require-paths as necessary):
+
+```
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\PHPMailerPGP;
+use PHPMailer\PHPMailer\SMTP;
+
+require 'php-mailer-pgp/Exception.php';
+require 'php-mailer-pgp/PHPMailer.php';
+require 'php-mailer-pgp/PHPMailerPGP.php';
+require 'php-mailer-pgp/SMTP.php';
+
+// And then we can initialise the mailer like so
+$mail = new PHPMailerPGP();
+// ... put your usual configuration here.
+// Encryption options:
+$mail->setGPGHome("/path/to/.gnupg");
+$mail->autoAddRecipients(false);
+$mail->addRecipient($to, $keyfp);
+$mail->encrypt();
+
+// And we send
+$mail->send();
+```
+
+The code:
+It probably doesn't adhere to PHPMailer's styling conventions, and I pretty
+much haven't documented the code at all, so I probably won't be pushing this
+upstream, unless somebody sees it and thinks that it's actually worthy of being
+pushed. 
